@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Header"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/btInicio"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:adjustViewBounds="false"
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/home_icon_desc"
+        app:layout_constraintEnd_toStartOf="@+id/btPacientes"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutName"
+        app:srcCompat="@drawable/home_icon" />
+
+    <ImageButton
+        android:id="@+id/btPacientes"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/person_icon_desc"
+        app:layout_constraintEnd_toStartOf="@+id/btAlarme"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btInicio"
+        app:layout_constraintTop_toBottomOf="@+id/layoutName"
+        app:srcCompat="@drawable/group_icon" />
+
+    <ImageButton
+        android:id="@+id/btAlarme"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/alarm_icon_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btPacientes"
+        app:layout_constraintTop_toBottomOf="@+id/layoutName"
+        app:srcCompat="@drawable/calendar_icon" />
+
+    <TextView
+        android:id="@+id/layoutName"
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:background="@color/colorPrimaryDark"
+        android:editable="false"
+        android:text="@string/inicioDesc"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

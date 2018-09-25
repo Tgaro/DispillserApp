@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Dispillser</string>
+    <string name="inicioDesc">Início</string>
+    <string name="pacienteDesc">Pacientes</string>
+    <string name="bluetoothDesc">Conectar à um dispositivo</string>
+    <string name="alarmeDesc">Programar medicamentos</string>
+    <string name="home_icon_desc">Return to home</string>
+    <string name="person_icon_desc">Add a new patient</string>
+    <string name="bt_icon_desc">Connect to a dispillser device</string>
+    <string name="alarm_icon_desc">Program a hour</string>
+    <string name="conecte_se">Nenhum dispositivo conectado.</string>
+</resources>
