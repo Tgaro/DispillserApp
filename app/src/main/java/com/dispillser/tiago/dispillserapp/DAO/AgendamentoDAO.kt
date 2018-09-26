@@ -24,7 +24,7 @@ class AgendamentoDAO(context: Context) : SQLiteOpenHelper(context, "Agendamento"
         onCreate(db)
     }
 
-    fun insere(paciente: Paciente, medicamento: Medicamento, horario: String, dose: Int?) {
+    fun insere(paciente: Paciente?, medicamento: Medicamento, horario: String, dose: Int?) {
         val db = writableDatabase
 
         val dados = dadosAgendamento(paciente, medicamento, horario, dose)
@@ -32,9 +32,18 @@ class AgendamentoDAO(context: Context) : SQLiteOpenHelper(context, "Agendamento"
         db.insert("Agendamento", null, dados)
     }
 
-    private fun dadosAgendamento(paciente: Paciente, medicamento: Medicamento, horario: String?, dose: Int?): ContentValues {
+    fun atualiza(paciente: Paciente?, medicamento: Medicamento, horario: String, dose: Int?, agendamento: Agendamento?) {
+        val db = writableDatabase
+
+        val dados = dadosAgendamento(paciente, medicamento, horario, dose)
+
+        val params = arrayOf<String>(agendamento?.id.toString())
+        db.update("Agendamento", dados, "agendamento_id = ?", params)
+    }
+
+    private fun dadosAgendamento(paciente: Paciente?, medicamento: Medicamento, horario: String?, dose: Int?): ContentValues {
         val dados = ContentValues()
-        dados.put("paciente_id", paciente.id)
+        dados.put("paciente_id", paciente?.id)
         dados.put("medicamento_id", medicamento.id)
         dados.put("nome_medicamento", medicamento.nome)
         dados.put("dose", dose)

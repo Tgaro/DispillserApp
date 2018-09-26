@@ -9,6 +9,8 @@ import android.support.annotation.RequiresApi
 import android.view.View
 import android.widget.*
 import com.dispillser.tiago.dispillserapp.DAO.AgendamentoDAO
+import com.dispillser.tiago.dispillserapp.Model.Agendamento
+import com.dispillser.tiago.dispillserapp.Model.FormAgendamento
 import com.dispillser.tiago.dispillserapp.Model.Medicamento
 import org.w3c.dom.Text
 import java.util.*
@@ -17,7 +19,8 @@ import java.text.SimpleDateFormat
 class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
 
     var myCalendar = Calendar.getInstance()
-    lateinit var paciente : Paciente
+    var agendamento : Agendamento? = null
+    var paciente : Paciente? = null
     lateinit var horario : EditText
     lateinit var pacienteNome: TextView
     lateinit var timePicker: TimePickerDialog
@@ -27,28 +30,31 @@ class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     lateinit var dosagem_combo : Spinner
     lateinit var medicamentoText : TextView
     lateinit var dosagemText : TextView
+    lateinit var formHelper : FormAgendamento
     var dosagemSel : Int? = 0
     var agendamentoDAO : AgendamentoDAO = AgendamentoDAO(this)
     var medicamento : Medicamento = Medicamento()
     var lista_Medicamentos = arrayOf("", "Rivotril", "Coristina", "Buscopan", "Aspirina")
     var lista_Dosagem = arrayOf(0,1,2,3)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agendamento)
+        formHelper = FormAgendamento(this)
         //Recupera paciente
-        paciente = intent.getSerializableExtra("PACIENTE") as Paciente
-        //Define views
+        paciente = intent.getSerializableExtra("PACIENTE") as Paciente?
+        agendamento = intent.getSerializableExtra("AGENDAMENTO") as Agendamento?
+        //Define cliques
         pacienteNome = findViewById(R.id.pacienteCalendarioNome)
         horario = findViewById(R.id.calendarioDate)
         confirmaButton = findViewById(R.id.calendarioSalvar)
         cancelaButton = findViewById(R.id.calendarioCancelar)
         medicamentoText = findViewById(R.id.medicamentoText)
         dosagemText = findViewById(R.id.dosagemText)
-        //Define cliques
-        setOnClicks()
+
         //Seta nome do paciente
-        pacienteNome.text = "${pacienteNome.text}${paciente.nome}"
+        pacienteNome.text = "${pacienteNome.text}${paciente?.nome}"
         //Define horário
         val timer: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener{ _, hour, minute ->
             myCalendar.set(Calendar.HOUR_OF_DAY, hour)
@@ -74,6 +80,11 @@ class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         val adapterDos = ArrayAdapter(this, android.R.layout.simple_spinner_item, lista_Dosagem)
         adapterDos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         dosagem_combo.adapter = adapterDos
+
+        setOnClicks()
+        if(agendamento != null){
+            formHelper.setAgendamento(agendamento)
+        }
         
     }
 
@@ -100,15 +111,21 @@ class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     private fun setOnClicks(){
         cancelaButton.setOnClickListener{
             val intentCancela = Intent(this, ListaScheduleActivity::class.java)
+            intentCancela.putExtra("PACIENTE", paciente)
             startActivity(intentCancela)
             this.finish()
         }
         confirmaButton.setOnClickListener{
 
-            setErrors()
-            if(!checkErrors()){
-                agendamentoDAO.insere(paciente, medicamento, horario.text.toString(), dosagemSel)
-                Toast.makeText(this, "Agendamento para " + medicamento.nome + " - " + paciente.id +" salvo!", Toast.LENGTH_LONG).show()
+            formHelper.setErrors()
+            if(!formHelper.checkErrors()){
+                if(agendamento == null){
+                    agendamentoDAO.insere(paciente, medicamento, horario.text.toString(), dosagemSel)
+                    Toast.makeText(this, "Agendamento salvo!", Toast.LENGTH_SHORT).show()
+                }else{
+                    agendamentoDAO.atualiza(paciente, medicamento, horario.text.toString(), dosagemSel, agendamento)
+                    Toast.makeText(this, "Agendamento atualizado!", Toast.LENGTH_SHORT).show()
+                }
                 val intentConfirma = Intent(this, ListaScheduleActivity::class.java)
                 intentConfirma.putExtra("PACIENTE", paciente)
                 startActivity(intentConfirma)
@@ -116,29 +133,4 @@ class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             }
         }
     }
-
-    private fun setErrors(){
-
-        if(horario.text.toString().isEmpty() ){
-            horario.error = "Entre uma data válida."
-        }else
-            horario.error = null
-
-        if(dosagem_combo.selectedItem == 0){
-            dosagemText.error = "Selecione uma dosagem."
-        }else
-            dosagemText.error = null
-
-        if(medicamento_combo.selectedItem == ""){
-            medicamentoText.error = "Selecione um medicamento."
-        }else
-            medicamentoText.error = null
-    }
-
-    private fun checkErrors() : Boolean{
-        return ! (horario.error.isNullOrBlank() &&
-                dosagemText.error.isNullOrBlank() &&
-                medicamentoText.error.isNullOrBlank())
-    }
-
 }

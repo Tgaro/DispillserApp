@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity()  {
         btnBluetooth.setOnClickListener{
             bluetooth = BluetoothAdapter.getDefaultAdapter()
 
-            while (!bluetooth.isEnabled) {
+            if (!bluetooth.isEnabled) {
                 val requestBluetooth = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivityForResult(requestBluetooth, 0)
             }

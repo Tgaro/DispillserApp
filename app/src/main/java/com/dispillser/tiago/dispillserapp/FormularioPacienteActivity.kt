@@ -7,11 +7,11 @@ import android.view.View
 import android.widget.*
 import com.dispillser.tiago.dispillserapp.DAO.PacienteDAO
 import com.dispillser.tiago.dispillserapp.Model.Paciente
-import com.dispillser.tiago.dispillserapp.Model.CamposForm
+import com.dispillser.tiago.dispillserapp.Model.FormPaciente
 
 
 class FormularioPacienteActivity : AppCompatActivity(){
-    private lateinit var camposForm : CamposForm
+    private lateinit var camposForm : FormPaciente
     private lateinit var headerText : TextView
     private lateinit var pacienteSalvarBt : ImageButton
     private lateinit var pacienteCancelarBt : ImageButton
@@ -23,7 +23,7 @@ class FormularioPacienteActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_paciente)
-        camposForm = CamposForm(this)
+        camposForm = FormPaciente(this)
         headerText = findViewById<View>(R.id.layoutName) as TextView
         headerText.text = "Adicionar Paciente"
 

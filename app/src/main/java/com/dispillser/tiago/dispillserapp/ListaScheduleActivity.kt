@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
-import android.widget.ArrayAdapter
-import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import com.dispillser.tiago.dispillserapp.DAO.AgendamentoDAO
 import com.dispillser.tiago.dispillserapp.Model.Agendamento
 import com.dispillser.tiago.dispillserapp.Model.CustomScheduleAdapter
@@ -35,6 +32,14 @@ class ListaScheduleActivity : AppCompatActivity(){
 
         paciente = intent.getSerializableExtra("PACIENTE") as Paciente?
         pacienteNome.text = "${paciente?.nome}"
+
+        listaMedicamento.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val agendamento = listaMedicamento.getItemAtPosition(position) as Agendamento
+            val intentSchedule = Intent(this, ScheduleActivity::class.java)
+            intentSchedule.putExtra("AGENDAMENTO", agendamento)
+            intentSchedule.putExtra("PACIENTE", paciente)
+            startActivity(intentSchedule)
+        }
 
         setOnClicks()
         carregaLista()

@@ -9,7 +9,7 @@ import android.widget.RadioGroup
 import com.dispillser.tiago.dispillserapp.MaskEditUtil
 import com.dispillser.tiago.dispillserapp.R
 
-class CamposForm(activity: Activity) : AppCompatActivity() {
+class FormPaciente(activity: Activity) : AppCompatActivity() {
 
     private var campoNome: EditText = activity.findViewById<View>(R.id.pacienteNome) as EditText
     private var campoNascimento: EditText = activity.findViewById<View>(R.id.pacienteNasc) as EditText
