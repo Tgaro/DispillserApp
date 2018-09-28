@@ -16,6 +16,7 @@ import android.view.ContextMenu
 import com.dispillser.tiago.dispillserapp.Model.CustomPacienteAdapter
 
 
+@RequiresApi(28)
 class ListaPacienteActivity : AppCompatActivity() {
 
     private lateinit var headerHelper : Header
@@ -34,37 +35,9 @@ class ListaPacienteActivity : AppCompatActivity() {
         headerHelper = Header(this)
         listaPaciente = findViewById(R.id.list_pacientes)
 
-        listaPaciente.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val paciente = listaPaciente.getItemAtPosition(position) as Paciente
-            val intentTelaPaciente = Intent(this, ListaScheduleActivity::class.java)
-            intentTelaPaciente.putExtra("PACIENTE", paciente)
-            startActivity(intentTelaPaciente)
-        }
         carregaLista()
         setOnClicks()
-
-        registerForContextMenu(listaPaciente)
-
     }
-
-    @RequiresApi(28)
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
-        val deletar = menu.add("Excluir")
-        deletar.setOnMenuItemClickListener {
-            val info = menuInfo as AdapterView.AdapterContextMenuInfo
-            val paciente = listaPaciente.getItemAtPosition(info.position) as Paciente
-            Toast.makeText(this@ListaPacienteActivity, "Paciente " + paciente.nome + " deletado.", Toast.LENGTH_SHORT).show()
-
-            val dao = PacienteDAO(this@ListaPacienteActivity)
-            dao.deleta(paciente)
-            dao.close()
-
-            carregaLista()
-            false
-        }
-    }
-
-    @RequiresApi(28)
     override fun onResume() {
         super.onResume()
         carregaLista()
@@ -79,8 +52,6 @@ class ListaPacienteActivity : AppCompatActivity() {
             this.finish()
         }
     }
-
-    @RequiresApi(28)
     fun carregaLista() {
         val dao = PacienteDAO(this)
         val pacientes = dao.buscaPaciente()
@@ -88,5 +59,4 @@ class ListaPacienteActivity : AppCompatActivity() {
         val adapter = CustomPacienteAdapter(this, pacientes)
         listaPaciente.adapter = adapter
     }
-
 }

@@ -12,11 +12,10 @@ import com.dispillser.tiago.dispillserapp.DAO.AgendamentoDAO
 import com.dispillser.tiago.dispillserapp.Model.Agendamento
 import com.dispillser.tiago.dispillserapp.Model.FormAgendamento
 import com.dispillser.tiago.dispillserapp.Model.Medicamento
-import org.w3c.dom.Text
 import java.util.*
 import java.text.SimpleDateFormat
 @RequiresApi(28)
-class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
+class AgendamentoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
 
     var myCalendar = Calendar.getInstance()
     var agendamento : Agendamento? = null
@@ -110,7 +109,7 @@ class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     private fun setOnClicks(){
         cancelaButton.setOnClickListener{
-            val intentCancela = Intent(this, ListaScheduleActivity::class.java)
+            val intentCancela = Intent(this, ListaAgendamentoActivity::class.java)
             intentCancela.putExtra("PACIENTE", paciente)
             startActivity(intentCancela)
             this.finish()
@@ -126,7 +125,7 @@ class ScheduleActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     agendamentoDAO.atualiza(paciente, medicamento, horario.text.toString(), dosagemSel, agendamento)
                     Toast.makeText(this, "Agendamento atualizado!", Toast.LENGTH_SHORT).show()
                 }
-                val intentConfirma = Intent(this, ListaScheduleActivity::class.java)
+                val intentConfirma = Intent(this, ListaAgendamentoActivity::class.java)
                 intentConfirma.putExtra("PACIENTE", paciente)
                 startActivity(intentConfirma)
                 this.finish()

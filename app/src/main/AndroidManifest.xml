@@ -27,9 +27,9 @@
 
         <activity android:name=".FormularioPacienteActivity" />
 
-        <activity android:name=".ScheduleActivity" />
+        <activity android:name=".AgendamentoActivity" />
 
-        <activity android:name=".ListaScheduleActivity" />
+        <activity android:name=".ListaAgendamentoActivity" />
 
         <activity android:name=".BluetoothActivity" />
         <activity android:name=".CalendarioActivity" />

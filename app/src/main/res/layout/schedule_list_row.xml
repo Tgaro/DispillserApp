@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ImageView
@@ -14,6 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/imgAvatar"
         android:orientation="vertical">
@@ -32,4 +34,28 @@
             android:layout_height="wrap_content"
             android:text="comment"/>
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/agendamentoExcluir"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="60dp"
+        android:background="#FAFAFA"
+        android:contentDescription="Excluir"
+        android:stateListAnimator="@null"
+        app:srcCompat="@drawable/delete_icon_gray" />
+
+    <ImageButton
+        android:id="@+id/agendamentoEditar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:background="#FAFAFA"
+        android:contentDescription="Editar"
+        android:stateListAnimator="@null"
+        app:srcCompat="@drawable/edit_icon_gray" />
 </RelativeLayout>

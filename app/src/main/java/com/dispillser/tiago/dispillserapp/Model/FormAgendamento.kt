@@ -26,7 +26,7 @@ class FormAgendamento(activity: Activity) : AppCompatActivity() {
     fun setAgendamento(agendamento: Agendamento?){
         horario.setText(agendamento?.horario)
         medicamento_combo.setSelection(agendamento?.medicamento_id!!.toInt())
-        dosagem_combo.setSelection(agendamento?.dose!!.toInt())
+        dosagem_combo.setSelection(agendamento.dose!!.toInt())
 
     }
 
