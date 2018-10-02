@@ -9,17 +9,19 @@ import android.widget.*
 
 class BluetoothActivity : AppCompatActivity(){
 
+    private lateinit var cancelarButton: ImageButton
     private lateinit var btList : ListView
-    private var pairedDevices: Set<BluetoothDevice>? = null
     private lateinit var bluetooth : BluetoothAdapter
+    private var pairedDevices: Set<BluetoothDevice>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth_list)
+        cancelarButton = findViewById(R.id.bluetoothCancelar)
         btList = findViewById(R.id.btList)
         pairedDevicesList()
+        setOnClicks()
     }
-
 
     private fun pairedDevicesList() {
         bluetooth = BluetoothAdapter.getDefaultAdapter()
@@ -45,6 +47,14 @@ class BluetoothActivity : AppCompatActivity(){
             val i = Intent(this, MainActivity::class.java)
             i.putExtra("BLUETOOTH", address) //this will be received at ledControl (class) Activity
             startActivity(i)
+            this.finish()
+        }
+    }
+
+    private fun setOnClicks(){
+        cancelarButton.setOnClickListener{
+            val intentMain = Intent(this, MainActivity::class.java)
+            startActivity(intentMain)
             this.finish()
         }
     }

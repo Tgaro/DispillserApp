@@ -20,10 +20,11 @@
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:background="@color/colorPrimaryDark"
-                android:elevation="6dp"
+                android:elevation="1dp"
                 android:stateListAnimator="@null"
                 app:srcCompat="@drawable/close_icon"
-                android:contentDescription="Cancel new patient" />
+                android:contentDescription="Cancel new patient"
+                android:layout_alignParentTop="true"/>
             <TextView
                 android:id="@+id/layoutName"
                 android:layout_width="match_parent"
@@ -33,7 +34,8 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp"/>
+                android:textSize="24sp"
+                android:layout_alignParentTop="true"/>
         </RelativeLayout>
 
         <TextView

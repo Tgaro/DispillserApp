@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import android.view.View
-import android.widget.Button
 import com.dispillser.tiago.dispillserapp.Model.Header
 import android.content.Intent
-import android.widget.Toast
 import android.bluetooth.BluetoothSocket
+import android.widget.*
+import com.dispillser.tiago.dispillserapp.R.color.colorPrimary
+import com.dispillser.tiago.dispillserapp.R.color.colorPrimaryLight
 import java.io.IOException
 import java.util.*
 
@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity()  {
     private lateinit var bodyText : TextView
     private lateinit var headerHelper : Header
     private lateinit var btnBluetooth : Button
+    private lateinit var homeBack : RelativeLayout
+    private lateinit var btnHome : ImageButton
 
     private lateinit var bluetooth : BluetoothAdapter
     private var ConnectSuccess = true
@@ -34,8 +36,12 @@ class MainActivity : AppCompatActivity()  {
         headerText = findViewById(R.id.layoutName)
         btnBluetooth = findViewById(R.id.btnBluetooth)
         bodyText = findViewById(R.id.inicioBody)
+        homeBack = findViewById(R.id.home)
+        btnHome = findViewById(R.id.btInicio)
         headerHelper = Header(this)
         headerText.text = "Início"
+        homeBack.setBackgroundColor(resources.getColor(colorPrimaryLight))
+        btnHome.setBackgroundColor(resources.getColor(colorPrimaryLight))
         setOnClicks()
 
         val address = intent.getStringExtra("BLUETOOTH")
@@ -66,10 +72,11 @@ class MainActivity : AppCompatActivity()  {
             if (!bluetooth.isEnabled) {
                 val requestBluetooth = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivityForResult(requestBluetooth, 0)
+            }else{
+                val intentBluetooth = Intent(this, BluetoothActivity::class.java)
+                startActivity(intentBluetooth)
+                this.finish()
             }
-            val intentBluetooth = Intent(this, BluetoothActivity::class.java)
-            startActivity(intentBluetooth)
-            this.finish()
         }
     }
 

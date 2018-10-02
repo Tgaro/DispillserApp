@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.dispillser.tiago.dispillserapp.CalendarioActivity
 import com.dispillser.tiago.dispillserapp.ListaPacienteActivity

@@ -1,54 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Header"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageButton
-        android:id="@+id/btInicio"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:adjustViewBounds="false"
-        android:background="@color/colorPrimary"
-        android:contentDescription="@string/home_icon_desc"
-        app:layout_constraintEnd_toStartOf="@+id/btPacientes"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutName"
-        app:srcCompat="@drawable/home_icon" />
-
-    <ImageButton
-        android:id="@+id/btPacientes"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@color/colorPrimary"
-        android:contentDescription="@string/person_icon_desc"
-        app:layout_constraintEnd_toStartOf="@+id/btAlarme"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btInicio"
-        app:layout_constraintTop_toBottomOf="@+id/layoutName"
-        app:srcCompat="@drawable/group_icon" />
-
-    <ImageButton
-        android:id="@+id/btAlarme"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@color/colorPrimary"
-        android:contentDescription="@string/alarm_icon_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btPacientes"
-        app:layout_constraintTop_toBottomOf="@+id/layoutName"
-        app:srcCompat="@drawable/calendar_icon" />
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="25dp">
 
     <TextView
         android:id="@+id/layoutName"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="34dp"
+        android:layout_marginTop="0dp"
         android:background="@color/colorPrimaryDark"
         android:editable="false"
         android:text="@string/inicioDesc"
@@ -56,8 +19,106 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/home"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/pacientes"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutName">
+
+        <ImageButton
+            android:id="@+id/btInicio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/home_icon_desc"
+            app:srcCompat="@drawable/home_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Início"
+            android:textAlignment="center"
+            android:textColor="#FFF" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pacientes"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/home"
+        app:layout_constraintEnd_toStartOf="@+id/calendario"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/home"
+        app:layout_constraintTop_toTopOf="@+id/home"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/btPacientes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/person_icon_desc"
+            app:srcCompat="@drawable/group_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Adicionar Paciente"
+            android:textAlignment="center"
+            android:textColor="#FFF" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/calendario"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/pacientes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pacientes"
+        app:layout_constraintTop_toTopOf="@+id/pacientes">
+
+        <ImageButton
+            android:id="@+id/btAlarme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/alarm_icon_desc"
+            app:srcCompat="@drawable/calendar_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="Calendário"
+            android:textAlignment="center"
+            android:textColor="#FFF" />
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

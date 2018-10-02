@@ -23,18 +23,22 @@ class ListaPacienteActivity : AppCompatActivity() {
     private lateinit var headerText : TextView
     private lateinit var pacienteAddBt : ImageButton
     private lateinit var listaPaciente : ListView
+    private lateinit var pacienteBack : RelativeLayout
+    private lateinit var btnPaciente : ImageButton
 
     @RequiresApi(28)
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_paciente)
-
+        pacienteBack = findViewById(R.id.pacientes)
+        btnPaciente = findViewById(R.id.btPacientes)
         headerText = findViewById(R.id.layoutName)
         headerText.text = "Paciente"
         headerHelper = Header(this)
         listaPaciente = findViewById(R.id.list_pacientes)
-
+        pacienteBack.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
+        btnPaciente.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
         carregaLista()
         setOnClicks()
     }
