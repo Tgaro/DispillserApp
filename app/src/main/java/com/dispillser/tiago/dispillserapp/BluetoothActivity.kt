@@ -45,7 +45,7 @@ class BluetoothActivity : AppCompatActivity(){
             val address = info.substring(info.length - 17)
 
             val i = Intent(this, MainActivity::class.java)
-            i.putExtra("BLUETOOTH", address) //this will be received at ledControl (class) Activity
+            i.putExtra("BLUETOOTH", address)
             startActivity(i)
             this.finish()
         }

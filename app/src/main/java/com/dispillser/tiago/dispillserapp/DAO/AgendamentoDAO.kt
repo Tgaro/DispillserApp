@@ -11,10 +11,10 @@ import com.dispillser.tiago.dispillserapp.Model.Paciente
 
 
 @RequiresApi(28)
-class AgendamentoDAO(context: Context) : SQLiteOpenHelper(context, "Agendamento", null, 2){
+class AgendamentoDAO(context: Context) : SQLiteOpenHelper(context, "Agendamento", null, 3){
 
     override fun onCreate(db: SQLiteDatabase) {
-        val sql = "CREATE TABLE Agendamento (agendamento_id INTEGER PRIMARY KEY AUTOINCREMENT, paciente_id INTEGER, medicamento_id INTEGER, nome_medicamento TEXT, dose INTEGER, horario TEXT)"
+        val sql = "CREATE TABLE Agendamento (agendamento_id INTEGER PRIMARY KEY AUTOINCREMENT, paciente_id INTEGER, nome_paciente TEXT, medicamento_id INTEGER, nome_medicamento TEXT, dose INTEGER, horario TEXT)"
         db.execSQL(sql)
     }
 
@@ -44,6 +44,7 @@ class AgendamentoDAO(context: Context) : SQLiteOpenHelper(context, "Agendamento"
     private fun dadosAgendamento(paciente: Paciente?, medicamento: Medicamento, horario: String?, dose: Int?): ContentValues {
         val dados = ContentValues()
         dados.put("paciente_id", paciente?.id)
+        dados.put("nome_paciente", paciente?.nome)
         dados.put("medicamento_id", medicamento.id)
         dados.put("nome_medicamento", medicamento.nome)
         dados.put("dose", dose)

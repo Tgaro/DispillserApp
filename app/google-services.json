@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "435396597932",
+    "firebase_url": "https://dispillsernotification.firebaseio.com",
+    "project_id": "dispillsernotification",
+    "storage_bucket": "dispillsernotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435396597932:android:b8ae242c31704d86",
+        "android_client_info": {
+          "package_name": "com.dispillser.tiago.dispillserapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435396597932-5qed13tce3g27vmck6kb7lcachhbcb1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxqPo8EQ5UQmTxX6JwaZ1jIcJG8O83FXI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
