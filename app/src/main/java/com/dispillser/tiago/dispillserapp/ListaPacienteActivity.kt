@@ -1,6 +1,8 @@
 package com.dispillser.tiago.dispillserapp
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -36,15 +38,14 @@ class ListaPacienteActivity : AppCompatActivity() {
         headerText = findViewById(R.id.layoutName)
         headerText.text = "Paciente"
         headerHelper = Header(this)
-        listaPaciente = findViewById(R.id.list_pacientes)
         pacienteBack.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
         btnPaciente.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
-        carregaLista()
+        carregaLista(this)
         setOnClicks()
     }
     override fun onResume() {
         super.onResume()
-        carregaLista()
+        carregaLista(this)
     }
 
     fun setOnClicks(){
@@ -56,11 +57,12 @@ class ListaPacienteActivity : AppCompatActivity() {
             this.finish()
         }
     }
-    fun carregaLista() {
-        val dao = PacienteDAO(this)
+    fun carregaLista(context: Activity) {
+        val dao = PacienteDAO(context)
         val pacientes = dao.buscaPaciente()
         dao.close()
-        val adapter = CustomPacienteAdapter(this, pacientes)
+        val adapter = CustomPacienteAdapter(this@ListaPacienteActivity, pacientes)
+        listaPaciente = findViewById(R.id.list_pacientes)
         listaPaciente.adapter = adapter
     }
 }

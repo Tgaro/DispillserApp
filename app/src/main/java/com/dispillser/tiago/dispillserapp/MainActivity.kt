@@ -1,6 +1,8 @@
 package com.dispillser.tiago.dispillserapp
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -18,9 +20,21 @@ import android.widget.Toast
 import java.io.InputStream
 import java.io.OutputStream
 import android.bluetooth.BluetoothDevice
+import android.content.Context
+import android.os.Build
+import android.support.annotation.RequiresApi
+import android.util.Log
+import android.view.LayoutInflater
+import com.dispillser.tiago.dispillserapp.DAO.AgendamentoDAO
+import com.dispillser.tiago.dispillserapp.DAO.PacienteDAO
 import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.iid.InstanceIdResult
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.iid.FirebaseInstanceId
+import java.time.LocalDateTime
+import kotlin.concurrent.timerTask
 
-
+@RequiresApi(Build.VERSION_CODES.P)
 @SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity()  {
 
@@ -32,7 +46,8 @@ class MainActivity : AppCompatActivity()  {
     private lateinit var homeBack : RelativeLayout
     private lateinit var btnHome : ImageButton
     var bluetoothIn: Handler? = null
-
+    val timer = Timer()
+    val handler = Handler()
     val handlerState = 0                        //used to identify handler message
     private var btAdapter: BluetoothAdapter? = null
     private var btSocket: BluetoothSocket? = null
@@ -41,6 +56,7 @@ class MainActivity : AppCompatActivity()  {
     private var mConnectedThread: ConnectedThread? = null
     private val BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
     private var address: String? = null
+    private lateinit var b: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +76,11 @@ class MainActivity : AppCompatActivity()  {
         setOnClicks()
         address = intent.getStringExtra("BLUETOOTH")
 
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this) { instanceIdResult ->
+            val deviceToken = instanceIdResult.token
+            Log.e("Token", deviceToken)
+        }
+
         if(address != null){
             connectBt(address)
             if(isConnected){
@@ -69,6 +90,11 @@ class MainActivity : AppCompatActivity()  {
             }
         }
     }
+
+    companion object {
+        private const val TAG = "Bluetooth Send Data"
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity()
@@ -141,8 +167,8 @@ class MainActivity : AppCompatActivity()  {
         }
 
         btnImportar.setOnClickListener{
-            Toast.makeText(baseContext, "Send x", Toast.LENGTH_SHORT).show()
-            mConnectedThread?.write("x")
+            Toast.makeText(baseContext, "Enviando dados.", Toast.LENGTH_SHORT).show()
+            enviaDadosArduino()
         }
     }
 
@@ -172,8 +198,89 @@ class MainActivity : AppCompatActivity()  {
 
             }
         }
-        mConnectedThread = ConnectedThread(btSocket)
-        mConnectedThread?.start()
+    }
+
+    fun enviaAgendamentos(_delay : Long) : Long{
+        val agendamentoDAO = AgendamentoDAO(this)
+        val ListaAgendamentos = agendamentoDAO.enviaDispositivo()
+        var delay = _delay
+        ListaAgendamentos.forEach{
+            delay += 3000
+            timer.schedule(timerTask{ mConnectedThread?.write(it) }, delay)
+            timer.schedule(timerTask{Log.d(TAG, it)},delay)
+        }
+        delay += 3000
+        timer.schedule(timerTask{ mConnectedThread?.write("#END#") }, delay)
+        timer.schedule(timerTask{Log.d(TAG, ("#END#"))},delay)
+        return delay
+    }
+
+
+    fun enviaPacientes(_delay : Long) : Long{
+        val pacienteDAO = PacienteDAO(this)
+        val ListaPacientes = pacienteDAO.enviaDispositivo()
+        var delay = _delay
+        ListaPacientes.forEach{
+            delay += 3000
+            timer.schedule(timerTask{ mConnectedThread?.write(it) }, delay)
+            timer.schedule(timerTask{Log.d(TAG, it)},delay)
+        }
+        delay += 3000
+        timer.schedule(timerTask{ mConnectedThread?.write("#END#") }, delay)
+        timer.schedule(timerTask{Log.d(TAG, ("#END#"))},delay)
+        delay += 3000
+
+        return delay
+    }
+
+    fun enviaDadosArduino(){
+        val date = LocalDateTime.now()
+        var delay : Long = 5000
+        btnImportar.isClickable = false
+        try{
+            ShowProgressDialog()
+            mConnectedThread = ConnectedThread(btSocket)
+            mConnectedThread?.start()
+            val begin = "#BEGIN#|${date.second}|${date.minute}|${date.hour}|${date.dayOfWeek.value}|${date.dayOfMonth}|${date.monthValue}|${date.year}"
+            timer.schedule(timerTask{mConnectedThread?.write(begin)}, delay)
+            timer.schedule(timerTask{Log.d(TAG, begin)},delay)
+            delay += 5000
+            timer.schedule(timerTask{ mConnectedThread?.write("W") }, delay)
+            timer.schedule(timerTask{Log.d(TAG, "W")},delay)
+            val secondDelay = enviaAgendamentos(delay)
+            val thirdDelay = enviaAgendamentos(secondDelay)
+            val fourthDelay = enviaPacientes(thirdDelay)
+            var lastDelay = enviaPacientes(fourthDelay)
+
+            lastDelay += 3000
+
+            //timer.schedule(timerTask{Toast.makeText(this@MainActivity, "Dados enviados.", Toast.LENGTH_SHORT).show()}, lastDelay)
+            timer.schedule(timerTask{ mConnectedThread?.write("#END#") }, lastDelay )
+            timer.schedule(timerTask{Log.d(TAG, "Final")},lastDelay)
+            timer.schedule(timerTask{btnImportar.isClickable = true}, lastDelay)
+
+            timer.schedule(timerTask{mConnectedThread?.interrupt()}, lastDelay)
+            timer.schedule(timerTask{HideProgressDialog()}, lastDelay)
+
+        }catch (e:Exception){
+            Log.e(TAG, e.message)
+        }
+
+    }
+
+    fun ShowProgressDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater
+        val dialogView = inflater.inflate(R.layout.progress_bar_layout, null)
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setCancelable(false)
+        b = dialogBuilder.create()
+        b.show()
+        b.window.setLayout(600, 400);
+    }
+
+    fun HideProgressDialog(){
+        b.dismiss()
     }
 }
 

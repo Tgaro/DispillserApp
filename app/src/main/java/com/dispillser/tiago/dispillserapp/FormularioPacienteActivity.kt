@@ -67,7 +67,7 @@ class FormularioPacienteActivity : AppCompatActivity(){
                 }
                 dao.close()
 
-                var intentCadastrarHorario = Intent(this, AgendamentoActivity::class.java)
+                var intentCadastrarHorario = Intent(this, FormularioAgendamentoActivity::class.java)
                 intentCadastrarHorario.putExtra("PACIENTE", paciente)
                 startActivity(intentCadastrarHorario)
 

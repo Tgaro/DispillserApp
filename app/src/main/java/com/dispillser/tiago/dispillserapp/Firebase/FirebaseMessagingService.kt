@@ -21,11 +21,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.support.v4.content.ContextCompat.getSystemService
 
-
-
-
-
-
 class FirebaseMessagingService : FirebaseMessagingService() {
     var NOTIFICATION_ID = 234
     private var count = 0
@@ -39,11 +34,18 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         // If the application is in the foreground handle both data and notification messages here.
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated.
-        Log.d(TAG, "From: " + remoteMessage.from)
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.notification!!.body)
-        //Calling method to generate notification
-        sendNotification(remoteMessage.notification!!.title,
-                remoteMessage.notification!!.body, remoteMessage.data)
+        Log.d(TAG, "Data Message Received ")
+        if (remoteMessage.notification != null) {
+            Log.d(TAG, "From: " + remoteMessage.from)
+            Log.d(TAG, "Notification Message Body: " + remoteMessage.notification!!.body)
+            //Calling method to generate notification
+            sendNotification(remoteMessage.notification!!.title,
+                    remoteMessage.notification!!.body, remoteMessage.data)
+        }else if (remoteMessage.data.isNotEmpty()){
+            val data = remoteMessage.data.toMap()
+            Log.d(TAG, "Data Message Body: " +  data["body"])
+            sendNotification(data["title"], data["body"], remoteMessage.data)
+        }
     }
 
     companion object {

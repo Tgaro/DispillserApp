@@ -12,7 +12,7 @@ import java.lang.reflect.Array.getDouble
 
 
 @RequiresApi(28)
-class PacienteDAO(context: Context) : SQLiteOpenHelper(context, "Paciente", null, 2){
+class PacienteDAO(context: Context) : SQLiteOpenHelper(context, "Paciente", null, 3){
 
     override fun onCreate(db: SQLiteDatabase) {
         val sql = "CREATE TABLE Paciente (paciente_id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, nascimento TEXT, nomeResp TEXT, telefoneResp TEXT, emailResp TEXT)"
@@ -82,7 +82,35 @@ class PacienteDAO(context: Context) : SQLiteOpenHelper(context, "Paciente", null
 
     fun deleta(paciente: Paciente) {
         val db = writableDatabase
-        val params = arrayOf<String>(paciente.id.toString())
+        val params = arrayOf(paciente.id.toString())
         db.delete("Paciente", "paciente_id = ?", params)
+    }
+
+    fun enviaDispositivo(): List<String>{
+        val sql = "SELECT * from Paciente;"
+        val db = readableDatabase
+        val c = db.rawQuery(sql, null)
+
+        val lista = ArrayList<String>()
+
+        while (c.moveToNext()) {
+            val sb = StringBuilder()
+            sb.append(c.getLong(c.getColumnIndex("paciente_id")).toString())
+            sb.append("|")
+            sb.append(c.getString(c.getColumnIndex("nome")))
+            sb.append("|")
+            sb.append(c.getString(c.getColumnIndex("nascimento")))
+            sb.append("|")
+            sb.append(c.getString(c.getColumnIndex("nomeResp")))
+            sb.append("|")
+            sb.append(c.getString(c.getColumnIndex("telefoneResp")))
+            sb.append("|")
+            sb.append(c.getString(c.getColumnIndex("emailResp")))
+
+            lista.add(sb.toString())
+        }
+        c.close()
+
+        return lista
     }
 }

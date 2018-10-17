@@ -15,7 +15,7 @@ import com.dispillser.tiago.dispillserapp.Model.Medicamento
 import java.util.*
 import java.text.SimpleDateFormat
 @RequiresApi(28)
-class AgendamentoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
+class FormularioAgendamentoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
 
     var myCalendar = Calendar.getInstance()
     var agendamento : Agendamento? = null
@@ -102,7 +102,7 @@ class AgendamentoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
     }
 
     private fun updateHorario() {
-        val myFormat = "hh:mm" //In which you need put here
+        val myFormat = "HH:mm" //In which you need put here
         val sdf = SimpleDateFormat(myFormat, Locale("pt", "BR"))
         horario.setText(sdf.format(myCalendar.time))
     }

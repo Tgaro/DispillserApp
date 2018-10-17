@@ -22,20 +22,21 @@
             android:layout_height="match_parent"
             android:id="@+id/mainBody"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/inicioBody"
                 android:layout_width="235dp"
                 android:layout_height="235dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="56dp"
                 android:background="@drawable/text_view"
                 android:gravity="center"
-                android:layout_gravity="center_horizontal"
                 android:text="@string/conecte_se"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp" />
 
-                <Button
+            <Button
                     android:id="@+id/btnBluetooth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,6 +57,7 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:textColor="#FFF"
                     android:text="Atualizar Dados" />
+
         </LinearLayout>
     </ScrollView>
 

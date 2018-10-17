@@ -13,13 +13,12 @@ import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import com.dispillser.tiago.dispillserapp.AgendamentoActivity
+import com.dispillser.tiago.dispillserapp.FormularioAgendamentoActivity
 import com.dispillser.tiago.dispillserapp.DAO.AgendamentoDAO
-import com.dispillser.tiago.dispillserapp.FormularioPacienteActivity
 import com.dispillser.tiago.dispillserapp.ListaAgendamentoActivity
 import com.dispillser.tiago.dispillserapp.R
 @RequiresApi(Build.VERSION_CODES.P)
-class CustomScheduleAdapter(private var activity: Activity, private var agendamentos: List<Agendamento>, private var paciente: Paciente?) : BaseAdapter() {
+class CustomAgendamentoAdapter(private var activity: Activity, private var agendamentos: List<Agendamento>, private var paciente: Paciente?) : BaseAdapter() {
 
     private class ViewHolder(row: View?) {
         var txtName: TextView? = null
@@ -52,21 +51,22 @@ class CustomScheduleAdapter(private var activity: Activity, private var agendame
         }
 
         val agendamento = agendamentos[position]
-        viewHolder.txtName?.text = agendamento.nome_medicamento
+        viewHolder.txtName?.text = "Id: " + agendamento.id + " - " + agendamento.nome_medicamento
         viewHolder.txtComment?.text = "Dosagem: " + agendamento.dose
 
         viewHolder.editAgendamento?.setOnClickListener {
-            val intentSchedule = Intent(activity, AgendamentoActivity::class.java)
+            val intentSchedule = Intent(activity, FormularioAgendamentoActivity::class.java)
             intentSchedule.putExtra("AGENDAMENTO", agendamento)
             intentSchedule.putExtra("PACIENTE", paciente)
             activity.startActivity(intentSchedule)
         }
         viewHolder.deleteAgendamento?.setOnClickListener{
+            Toast.makeText(activity, "Agendamento deletado.", Toast.LENGTH_SHORT).show()
+
             val dao = AgendamentoDAO(activity)
             dao.deleta(agendamento)
             dao.close()
-            Toast.makeText(activity, "Agendamento deletado.", Toast.LENGTH_SHORT).show()
-            viewHolder.agendamentoActivity.carregaLista()
+            activity.recreate()
         }
 
         return view as View

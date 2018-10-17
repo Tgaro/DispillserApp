@@ -10,6 +10,7 @@ class Agendamento() : Serializable {
     }
     var id: Long? = null
     var pessoa_id: Long? = null
+    var nome_paciente: String? = null
     var medicamento_id: Long? = null
     var nome_medicamento: String? = null
     var dose: Int? = null

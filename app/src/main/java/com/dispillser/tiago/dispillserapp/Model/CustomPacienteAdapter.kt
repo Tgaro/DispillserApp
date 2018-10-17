@@ -70,7 +70,8 @@ class CustomPacienteAdapter(private var activity: Activity, private var paciente
             val dao = PacienteDAO(activity)
             dao.deleta(paciente)
             dao.close()
-            viewHolder.pacienteActivity.carregaLista()
+            activity.recreate()
+
         }
         viewHolder.listaAgendamentos?.setOnClickListener {
             val intentTelaPaciente = Intent(activity, ListaAgendamentoActivity::class.java)

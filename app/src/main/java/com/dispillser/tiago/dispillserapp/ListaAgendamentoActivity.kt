@@ -1,15 +1,13 @@
 package com.dispillser.tiago.dispillserapp
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
-import android.view.ContextMenu
-import android.view.View
 import android.widget.*
 import com.dispillser.tiago.dispillserapp.DAO.AgendamentoDAO
-import com.dispillser.tiago.dispillserapp.Model.Agendamento
-import com.dispillser.tiago.dispillserapp.Model.CustomScheduleAdapter
+import com.dispillser.tiago.dispillserapp.Model.CustomAgendamentoAdapter
 import com.dispillser.tiago.dispillserapp.Model.Paciente
 @RequiresApi(28)
 class ListaAgendamentoActivity : AppCompatActivity(){
@@ -20,14 +18,12 @@ class ListaAgendamentoActivity : AppCompatActivity(){
     lateinit var voltarButton: ImageButton
     lateinit var adicionaAgendamento: ImageButton
     lateinit var listaMedicamento : ListView
-    var agendamentoDAO : AgendamentoDAO = AgendamentoDAO(this)
     var paciente : Paciente? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_agendamentos)
         pacienteNome = findViewById(R.id.pacienteTextNome)
-        listaMedicamento = findViewById(R.id.list_medicamentos)
         //editPaciente = findViewById(R.id.pacienteEditar)
         adicionaAgendamento = findViewById(R.id.adicionaAgendamento)
         voltarButton = findViewById(R.id.agendamentoVoltar)
@@ -36,12 +32,12 @@ class ListaAgendamentoActivity : AppCompatActivity(){
         pacienteNome.text = "${paciente?.nome}"
 
         setOnClicks()
-        carregaLista()
+        carregaLista(paciente?.id, this)
     }
 
     override fun onResume() {
         super.onResume()
-        carregaLista()
+        carregaLista(paciente?.id, this)
     }
 
     private fun setOnClicks(){
@@ -51,16 +47,18 @@ class ListaAgendamentoActivity : AppCompatActivity(){
             this.finish()
         }
         adicionaAgendamento.setOnClickListener{
-            val intentAdiciona = Intent(this, AgendamentoActivity::class.java)
+            val intentAdiciona = Intent(this, FormularioAgendamentoActivity::class.java)
             intentAdiciona.putExtra("PACIENTE", paciente)
             startActivity(intentAdiciona)
         }
     }
 
-    fun carregaLista() {
-        val agendamentos = agendamentoDAO.buscaAgendamentos(paciente?.id)
-        agendamentoDAO.close()
-        val adapter = CustomScheduleAdapter(this, agendamentos, paciente)
+    fun carregaLista(id : Long?, context: Activity) {
+        val dao = AgendamentoDAO(context)
+        val agendamentos = dao.buscaAgendamentos(id)
+        dao.close()
+        val adapter = CustomAgendamentoAdapter(this@ListaAgendamentoActivity, agendamentos, paciente)
+        listaMedicamento = findViewById(R.id.list_medicamentos)
         listaMedicamento.adapter = adapter
     }
 }
